@@ -33,7 +33,7 @@ EXPECTED_ROUTES = [
     ("librarian", "qwen/qwen3.7-flash", "low", 8192),
     ("code_monkey", "deepseek/deepseek-v4.1-flash", "low", 16384),
     ("adversary", "anthropic/claude-haiku-5.5", "medium", 8192),
-    ("analyst", "deepseek/deepseek-v4.1-flash", "low", 8192),
+    ("analyst", "deepseek/deepseek-v4-pro", "medium", 8192),  # v2: distinct tier from code_monkey
     ("briefer", "deepseek/deepseek-v4-flash", "low", 8192),
 ]
 

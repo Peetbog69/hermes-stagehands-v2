@@ -5,3 +5,5 @@ __pycache__/
 *.log
 scratch/
 .venv/
+# Media/trailer assets live outside the plugin package (see README).
+assets/

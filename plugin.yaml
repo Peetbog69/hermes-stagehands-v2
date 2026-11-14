@@ -5,7 +5,7 @@ label: Stagehands 2.0 (Dual-Core Sovereign & Backstage Swarm)
 description: Stagehands 2.0 — Dual-core hybrid engine fusing front-of-house warmth and natural speed (Gemini Flash) with deep, unvarnished backstage analysis and execution (DeepSeek).
 author: Tyler Gray (@Peetbog69) & Nimbo
 license: MIT
-homepage: https://github.com/Peetbog69/hermes-stagehands
+homepage: https://github.com/Peetbog69/hermes-stagehands-v2
 tags:
   - delegation
   - routing
@@ -18,4 +18,4 @@ config_keys:
 config_schema:
   workers:
     type: dict
-    description: Optional mapping (or list) of backstage worker definitions overriding the built-in 5-worker roster.
+    description: Optional mapping (or list) of backstage worker definitions overriding the built-in 6-worker roster.

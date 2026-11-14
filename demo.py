@@ -9,6 +9,16 @@ import sys
 import time
 from types import ModuleType
 
+try:  # pure helper, no core dependency; falls back to a local copy in shim mode
+    from provider import redact_route
+except Exception:  # pragma: no cover - standalone showcase
+    def redact_route(route):
+        out = dict(route)
+        for field in ("api_key",):
+            if out.get(field):
+                out[field] = "***redacted***"
+        return out
+
 
 ROOT = Path(__file__).resolve().parent
 # Explicit response-length assumptions from bench/runner.py, not measured outputs.
@@ -40,7 +50,7 @@ def load_provider():
         if error.name not in {"agent", "agent.delegation_provider"}:
             raise
     else:
-        from provider import StagehandsProvider
+        from provider import StagehandsProvider, redact_route
         return StagehandsProvider(), DelegationRouteError, "real Hermes core"
 
     shim = ModuleType("agent.delegation_provider")
@@ -58,7 +68,7 @@ def load_provider():
         sys.modules["agent"] = parent
     sys.modules["agent.delegation_provider"] = shim
     try:
-        from provider import StagehandsProvider
+        from provider import StagehandsProvider, redact_route
     finally:
         # Keep the shim local to loading the showcase, not future core imports.
         sys.modules.pop("agent.delegation_provider", None)
@@ -108,7 +118,7 @@ def main(argv=None):
     for worker in provider.task_parameters({})["worker"]["enum"]:
         route = provider.route_task({"goal": "Return a concise evidence brief", "worker": worker}, {})
         print(paint(f"  ✓ {worker}", "32"))
-        print("    " + json.dumps(route, ensure_ascii=False, sort_keys=True))
+        print("    " + json.dumps(redact_route(route), ensure_ascii=False, sort_keys=True))
     try:
         provider.route_task({"goal": "Demonstrate fail-closed routing", "worker": "invalid_worker"}, {})
     except route_error as error:

@@ -1,8 +1,8 @@
-# 🎭 Sovereign & Stagehands (`hermes-stagehands`)
+# 🎭 Sovereign & Stagehands (`hermes-stagehands-v2`)
 
 *Keep your frontier model pure, warm, and sovereign. Send the backstage stagehands into the 73,000-token log mines.*
 
-A native [Hermes Agent](https://github.com/NousResearch/hermes-agent) **v0.22.5+ delegation provider** that routes heavy tool work to five specialized, token-budgeted workers. Your primary model owns the relationship, strategy, and final voice; isolated subagents process the noisy evidence.
+A native [Hermes Agent](https://github.com/NousResearch/hermes-agent) **v0.22.5+ delegation provider** that routes heavy tool work to six specialized, token-budgeted workers. Your primary model owns the relationship, strategy, and final voice; isolated subagents process the noisy evidence.
 
 **95.9% less parent-context pollution · up to 450.0:1 single-turn compression (`20,700 → 46` tokens) · 95.5% backstage-delegable payload** across our saved benchmark suite and live production telemetry.
 
@@ -67,9 +67,9 @@ The fix: delegate **before** reading the raw payload into the parent. Give the w
 
 Hermes supplies subagent isolation and dispatch. Stagehands supplies the typed `worker` parameter, persona guidance, model routes, and output budgets through the native plugin seam. The Sovereign gets the brief and speaks to the human.
 
-## Meet the five workers
+## Meet the six workers
 
-When `provider` is not pinned on a worker or in `delegation.provider`, workers automatically inherit the parent session's active provider (`nous`, `openrouter`, etc.) and re-derive the matching API mode. No worker injects a default `service_tier`. Workers set generous `request_overrides.max_tokens` (`8,192` for `scout`, `librarian`, `adversary`, `briefer`; `16,384` for `code_monkey`) so internal reasoning tokens (`reasoning_tokens`) and multi-step tool calls never hit premature API truncation (`finish_reason: length`), while the worker's prompt enforces a strict word-count brief ceiling.
+When `provider` is not pinned on a worker or in `delegation.provider`, workers automatically inherit the parent session's active provider (`nous`, `openrouter`, etc.) and re-derive the matching API mode. No worker injects a default `service_tier`. Workers set generous `request_overrides.max_tokens` (`8,192` for `scout`, `librarian`, `adversary`, `analyst`, `briefer`; `16,384` for `code_monkey`) so internal reasoning tokens (`reasoning_tokens`) and multi-step tool calls never hit premature API truncation (`finish_reason: length`), while the worker's prompt enforces a strict word-count brief ceiling.
 
 | Worker | Default model | Reasoning effort | Turn ceiling (`max_tokens`) | Brief target | Backstage job |
 | :--- | :--- | :--- | ---: | ---: | :--- |
@@ -77,6 +77,7 @@ When `provider` is not pinned on a worker or in `delegation.provider`, workers a
 | `librarian` | `qwen/qwen3.7-flash` | `low` | 8,192 | ≤350 words | Search documentation and code; return cited excerpts. |
 | `code_monkey` | `deepseek/deepseek-v4.1-flash` | `low` | 16,384 | ≤400 words | Investigate repo greps, test failures, and root-cause diffs. |
 | `adversary` | `anthropic/claude-haiku-5.5` | `medium` | 8,192 | ≤350 words | Audit edge cases, race conditions, and security holes. |
+| `analyst` | `deepseek/deepseek-v4-pro` | `medium` | 8,192 | ≤300 words | Try to break a claim, plan, or number before the Sovereign repeats it. |
 | `briefer` | `deepseek/deepseek-v4-flash` | `low` | 8,192 | ≤250 words | Turn bulky JSON and payloads into executive briefs of ≤250 words. |
 
 For example, a delegated task selects its route with:
@@ -127,7 +128,7 @@ Beyond the synthetic suite above, we audited a live daily-driver Hermes companio
 
 ## Built for Hermes v0.22.5: the four stitches
 
-1. **Zero-config roster.** `DEFAULT_WORKERS` supplies all five roles immediately. An empty configuration still produces a populated worker enum and deterministic schema extensions.
+1. **Zero-config roster.** `DEFAULT_WORKERS` supplies all six roles immediately. An empty configuration still produces a populated worker enum and deterministic schema extensions.
 2. **Safe `service_tier` handling.** Default worker routes never inject unsupported `/fast` tiers into Nous/OpenRouter flash models. An explicitly configured worker tier passes through; omitting a worker strips the fallback configuration's `service_tier`, matching `DefaultDelegationProvider`.
 3. **Fail-closed selection.** An unknown worker raises `DelegationRouteError`, naming the bad value and the valid roster. A typo never silently routes heavy work onto the frontstage Sovereign. Intentionally omitting `worker` retains the parent delegation route.
 4. **Two-layer brevity enforcement.** `description()` teaches concise, structured briefs and `output_schema` use; per-worker `request_overrides.max_tokens` carries the mechanical output cap across the core `ROUTE_KEYS` boundary. Persona metadata stays out of worker routes.
@@ -137,7 +138,7 @@ Beyond the synthetic suite above, we audited a live daily-driver Hermes companio
 With Hermes **v0.22.5+** installed and credentials configured for your chosen model provider, run from this repository:
 
 ```bash
-hermes plugins install /root/stagehands
+hermes plugins install Peetbog69/hermes-stagehands-v2
 hermes config set delegation.backend stagehands
 ```
 
@@ -198,7 +199,7 @@ Use `/stagehands stats` (or `python3 stats.py --save bench/live_stats.json`) to 
 
 ### Optional `config.yaml` overrides
 
-A **mapping merges** named overrides onto the five-worker roster. Unspecified fields retain their defaults:
+A **mapping merges** named overrides onto the six-worker roster. Unspecified fields retain their defaults:
 
 ```yaml
 delegation:
@@ -238,13 +239,19 @@ python3 demo.py --fast --color always
 
 The default replay takes only tiny 0.05-second beats; `--fast` removes pauses and `--step` lets a presenter advance each workload. ANSI colors activate in a terminal, with `--color always` for recordings or `--color never` for plain output.
 
-The demo resolves all five routes through `StagehandsProvider`, catches an invalid-worker error, and replays TASK-01 through TASK-05 with raw/brief and cost comparison bars. If Hermes is unavailable, a narrowly scoped compatibility shim supplies the base class and route-key contract; the screen labels this mode explicitly. Real-core integration is covered separately by the test suite.
+The demo resolves all six routes through `StagehandsProvider`, catches an invalid-worker error, and replays TASK-01 through TASK-05 with raw/brief and cost comparison bars. If Hermes is unavailable, a narrowly scoped compatibility shim supplies the base class and route-key contract; the screen labels this mode explicitly. Real-core integration is covered separately by the test suite.
 
 ### Reproduce and verify
 
 ```bash
 # Recalculate the modeled benchmark (rewrites results.json and BENCHMARK_REPORT.md).
 python3 bench/runner.py
+
+# Every rate in the package resolves to rates.py (verified against the live
+# provider catalog on 2026-11-14: gemini-4-argon $2.00/M prompt, $10.00/M
+# completion, $0.10/M cache read). Change it there, never in a second file;
+# override per deployment with STAGEHANDS_RATES_JSON.
+python3 -c "import rates, json; print(json.dumps(rates.RATES, indent=2))"
 
 # Run contract tests against the real Hermes v0.22.5 core (stdlib unittest, zero extra deps).
 python3 -m unittest discover -s tests -v

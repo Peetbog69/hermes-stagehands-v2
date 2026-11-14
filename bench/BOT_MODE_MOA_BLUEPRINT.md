@@ -192,13 +192,13 @@ sovereign_only_cost = MAX(0, parent.estimated_cost_usd - SUM(child.estimated_cos
 All key `UNVERIFIED` items flagged by the Chair in Part I §4 have now been verified directly against `/usr/local/lib/hermes-agent`:
 
 1. **YAML Parent & Per-Profile Scope of Janitor Keys — VERIFIED:**
-   - `proactive_prune_tokens: 48000`, `threshold_tokens: 120000`, and `protect_last_n: 20` live under the top-level `compression:` section in each profile's `~/.hermes/profiles/<name>/config.yaml` (verified live in `/root/.hermes/profiles/nimbo/config.yaml`).
+   - `proactive_prune_tokens: 48000`, `threshold_tokens: 120000`, and `protect_last_n: 20` live under the top-level `compression:` section in each profile's `~/.hermes/profiles/<name>/config.yaml` (verified live in the active profile's `config.yaml`).
 2. **`delegation.compression_threshold_tokens` — VERIFIED:**
    - Exists in `/usr/local/lib/hermes-agent/hermes_cli/config_defaults.py:1336-1343` and documented in `website/docs/user-guide/features/delegation.md:797` as an optional absolute cap (`>= 16000`) on a subagent's own compaction trigger.
 3. **Prompt-Cache Regrowth Runway (Seat 2's Cache-Thrash Question) — VERIFIED:**
    - `/usr/local/lib/hermes-agent/agent/context_compressor_prune.py:60-132` and `agent/context_compressor.py:330` implement `_proactive_prune_rearm_tokens` (persisted in `sessions.model_config` so it even survives gateway restarts, tested in `tests/agent/test_proactive_prune_restart_safety.py`). Once a 48k prune runs, it disarms until the session grows by another `+48,000` tokens, preventing per-turn prompt-cache invalidation.
 4. **Does In-Place Compaction (`/compact` / `in_place: true`) Preserve `session_id`? — VERIFIED LIVE:**
    - Proven in today's guinea-pig session `20261105_055550_0ca572b8`: when `threshold_tokens: 120000` triggered in-place compaction after the 5 survey lot files, the session kept `id = '20261105_055550_0ca572b8'` continuously.
-5. **Robert's Two `state.db` Traps in `/root/stagehands/stats.py` — VERIFIED & PATCHED:**
-   - `/root/stagehands/stats.py` now selects `COALESCE(estimated_cost_usd, 0.0)` on both parent and child rows, filters subagents via `(s.source = 'subagent' OR json_extract(s.model_config, '$._delegate_from') IS NOT NULL)`, and computes `sovereign_only_cost_usd = max(0.0, parent_total_cost - children_cost_usd)`.
+5. **Robert's Two `state.db` Traps in `stats.py` — VERIFIED & PATCHED:**
+   - `stats.py` now selects `COALESCE(estimated_cost_usd, 0.0)` on both parent and child rows, filters subagents via `(s.source = 'subagent' OR json_extract(s.model_config, '$._delegate_from') IS NOT NULL)`, and computes `sovereign_only_cost_usd = max(0.0, parent_total_cost - children_cost_usd)`.
 

@@ -1,5 +1,5 @@
 {
-  "db_path": "/root/.hermes/profiles/nimbo/state.db",
+  "db_path": "state.db (profile-relative)",
   "active_session": {
     "id": "20261105_055550_0ca572b8",
     "source": "telegram",

@@ -1,34 +1,44 @@
 {
-  "timestamp": "2026-11-05T00:55:41.370870+00:00",
+  "timestamp": "2026-11-14T23:19:32.462546+00:00",
   "summary": {
     "total_tasks_evaluated": 5,
-    "pure_sovereign_total_cost_usd": 0.9381,
-    "stagehands_total_cost_usd": 0.0851,
-    "aggregate_cost_savings_pct": 90.9,
-    "aggregate_cost_ratio": "11.0x cost reduction",
+    "pure_sovereign_total_cost_usd": 0.2065,
+    "stagehands_total_cost_usd": 0.0207,
+    "aggregate_cost_savings_pct": 90.0,
+    "aggregate_cost_ratio": "10.0x cost reduction",
     "pure_sovereign_total_memory_tokens": 93812,
     "stagehands_total_memory_tokens": 3860,
     "aggregate_memory_pollution_reduction_pct": 95.9
   },
   "rates_card_usd_per_million": {
     "google/gemini-4-argon": {
-      "input": 10.0,
+      "input": 2.0,
       "output": 10.0,
       "role": "Sovereign Voice (Audi)"
     },
+    "deepseek/deepseek-v4-pro": {
+      "input": 0.94,
+      "output": 1.89,
+      "role": "Stagehand (analyst)"
+    },
+    "deepseek/deepseek-v4.1-flash": {
+      "input": 0.106,
+      "output": 0.513,
+      "role": "Stagehand (code_monkey)"
+    },
     "deepseek/deepseek-v4-flash": {
-      "input": 0.5,
-      "output": 0.5,
-      "role": "Stagehand (scout / code_monkey / briefer)"
+      "input": 0.09,
+      "output": 0.18,
+      "role": "Stagehand (scout / briefer)"
     },
     "qwen/qwen3.7-flash": {
-      "input": 0.4,
-      "output": 0.4,
+      "input": 0.03,
+      "output": 0.13,
       "role": "Stagehand (librarian)"
     },
     "anthropic/claude-haiku-5.5": {
-      "input": 1.0,
-      "output": 1.0,
+      "input": 0.1,
+      "output": 0.5,
       "role": "Stagehand (adversary)"
     }
   },
@@ -44,19 +54,19 @@
       "pure_sovereign": {
         "input_tokens": 73641,
         "output_tokens": 487,
-        "cost_usd": 0.74128,
+        "cost_usd": 0.15215,
         "parent_memory_tokens": 74128
       },
       "sovereign_and_stagehands": {
-        "stagehand_cost_usd": 0.03693,
-        "sovereign_cost_usd": 0.00787,
-        "total_cost_usd": 0.0448,
+        "stagehand_cost_usd": 0.00668,
+        "sovereign_cost_usd": 0.00249,
+        "total_cost_usd": 0.00917,
         "parent_memory_tokens": 787
       },
       "deltas": {
         "cost_reduction_pct": 94.0,
         "memory_pollution_reduction_pct": 98.9,
-        "savings_ratio": "16.5x cheaper"
+        "savings_ratio": "16.6x cheaper"
       }
     },
     {
@@ -70,19 +80,19 @@
       "pure_sovereign": {
         "input_tokens": 1054,
         "output_tokens": 347,
-        "cost_usd": 0.01401,
+        "cost_usd": 0.00558,
         "parent_memory_tokens": 1401
       },
       "sovereign_and_stagehands": {
-        "stagehand_cost_usd": 0.00058,
-        "sovereign_cost_usd": 0.00647,
-        "total_cost_usd": 0.00705,
+        "stagehand_cost_usd": 0.00013,
+        "sovereign_cost_usd": 0.00205,
+        "total_cost_usd": 0.00217,
         "parent_memory_tokens": 647
       },
       "deltas": {
-        "cost_reduction_pct": 49.7,
+        "cost_reduction_pct": 61.0,
         "memory_pollution_reduction_pct": 53.8,
-        "savings_ratio": "2.0x cheaper"
+        "savings_ratio": "2.6x cheaper"
       }
     },
     {
@@ -96,19 +106,19 @@
       "pure_sovereign": {
         "input_tokens": 2188,
         "output_tokens": 546,
-        "cost_usd": 0.02734,
+        "cost_usd": 0.00984,
         "parent_memory_tokens": 2734
       },
       "sovereign_and_stagehands": {
-        "stagehand_cost_usd": 0.00099,
-        "sovereign_cost_usd": 0.00846,
-        "total_cost_usd": 0.00945,
+        "stagehand_cost_usd": 0.00012,
+        "sovereign_cost_usd": 0.00265,
+        "total_cost_usd": 0.00277,
         "parent_memory_tokens": 846
       },
       "deltas": {
-        "cost_reduction_pct": 65.5,
+        "cost_reduction_pct": 71.9,
         "memory_pollution_reduction_pct": 69.1,
-        "savings_ratio": "2.9x cheaper"
+        "savings_ratio": "3.6x cheaper"
       }
     },
     {
@@ -122,19 +132,19 @@
       "pure_sovereign": {
         "input_tokens": 595,
         "output_tokens": 613,
-        "cost_usd": 0.01208,
+        "cost_usd": 0.00732,
         "parent_memory_tokens": 1208
       },
       "sovereign_and_stagehands": {
-        "stagehand_cost_usd": 0.00091,
-        "sovereign_cost_usd": 0.00913,
-        "total_cost_usd": 0.01004,
+        "stagehand_cost_usd": 0.00028,
+        "sovereign_cost_usd": 0.003,
+        "total_cost_usd": 0.00328,
         "parent_memory_tokens": 913
       },
       "deltas": {
-        "cost_reduction_pct": 16.9,
+        "cost_reduction_pct": 55.2,
         "memory_pollution_reduction_pct": 24.4,
-        "savings_ratio": "1.2x cheaper"
+        "savings_ratio": "2.2x cheaper"
       }
     },
     {
@@ -148,19 +158,19 @@
       "pure_sovereign": {
         "input_tokens": 13974,
         "output_tokens": 367,
-        "cost_usd": 0.14341,
+        "cost_usd": 0.03162,
         "parent_memory_tokens": 14341
       },
       "sovereign_and_stagehands": {
-        "stagehand_cost_usd": 0.00705,
-        "sovereign_cost_usd": 0.00667,
-        "total_cost_usd": 0.01372,
+        "stagehand_cost_usd": 0.00129,
+        "sovereign_cost_usd": 0.00203,
+        "total_cost_usd": 0.00332,
         "parent_memory_tokens": 667
       },
       "deltas": {
-        "cost_reduction_pct": 90.4,
+        "cost_reduction_pct": 89.5,
         "memory_pollution_reduction_pct": 95.3,
-        "savings_ratio": "10.5x cheaper"
+        "savings_ratio": "9.5x cheaper"
       }
     }
   ]

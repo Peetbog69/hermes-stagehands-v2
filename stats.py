@@ -38,10 +38,14 @@ _PRUNED_SEARCH_FILES_RE = re.compile(
 )
 _PRUNED_DUPLICATE_PREFIX = "[Duplicate tool output"
 
-ARGON_INPUT_USD_PER_M = 3.00
-ARGON_UNCACHED_INPUT_USD_PER_M = 2.00
-ARGON_CACHED_INPUT_USD_PER_M = 0.10
-WORKER_INPUT_USD_PER_M = 0.15
+# Pricing lives in exactly one place: rates.py (verified against the live
+# provider catalog). Do not restate a rate here.
+from rates import (  # noqa: E402
+    ARGON_CACHED_INPUT_USD_PER_M,
+    ARGON_INPUT_USD_PER_M,
+    ARGON_UNCACHED_INPUT_USD_PER_M,
+    WORKER_INPUT_USD_PER_M,
+)
 
 
 def _estimate_pruned_stub_orig_chars(content: str) -> int | None:
@@ -302,14 +306,12 @@ def compute_stats(
             front_door_snowball_tokens + active_janitor["snowball_avoided_tokens"]
         )
         cache_hit_rate = float(active_session.get("cache_hit_rate") or 0.0)
-        effective_rate = (
-            round(
-                ARGON_UNCACHED_INPUT_USD_PER_M * (1.0 - cache_hit_rate)
-                + ARGON_CACHED_INPUT_USD_PER_M * cache_hit_rate,
-                4,
-            )
-            if cache_hit_rate > 0
-            else ARGON_INPUT_USD_PER_M
+        # A cache miss pays list, a KV hit pays the cached rate; the blended
+        # effective rate can never exceed list nor fall below the cached rate.
+        effective_rate = round(
+            ARGON_UNCACHED_INPUT_USD_PER_M * (1.0 - cache_hit_rate)
+            + ARGON_CACHED_INPUT_USD_PER_M * cache_hit_rate,
+            4,
         )
         active_saved_usd = (total_snowball_avoided / 1_000_000.0) * ARGON_INPUT_USD_PER_M
         active_cache_adjusted_saved_usd = (

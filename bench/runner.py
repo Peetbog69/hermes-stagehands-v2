@@ -6,6 +6,7 @@ bloat across 5 representative agent workloads using live Nous rate cards.
 """
 
 import json
+import sys
 import math
 from pathlib import Path
 from datetime import datetime, timezone
@@ -13,34 +14,9 @@ from datetime import datetime, timezone
 BENCH_DIR = Path(__file__).resolve().parent
 FIXTURES_DIR = BENCH_DIR / "fixtures"
 
-# Rates per 1,000,000 tokens (USD)
-RATES = {
-    "google/gemini-4-argon": {
-        "input": 10.00,
-        "output": 10.00,
-        "role": "Sovereign Voice (Audi)"
-    },
-    "deepseek/deepseek-v4-flash": {
-        "input": 0.50,
-        "output": 0.50,
-        "role": "Stagehand (scout / briefer)"
-    },
-    "deepseek/deepseek-v4.1-flash": {
-        "input": 0.50,
-        "output": 0.50,
-        "role": "Stagehand (code_monkey)"
-    },
-    "qwen/qwen3.7-flash": {
-        "input": 0.40,
-        "output": 0.40,
-        "role": "Stagehand (librarian)"
-    },
-    "anthropic/claude-haiku-5.5": {
-        "input": 1.00,
-        "output": 1.00,
-        "role": "Stagehand (adversary)"
-    }
-}
+# Rates per 1,000,000 tokens (USD) — single source of truth is <repo>/rates.py.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from rates import RATES, SOVEREIGN_MODEL  # noqa: E402
 
 # Accurate token estimate heuristic (1 token ~= 4 chars)
 def estimate_tokens(text: str) -> int:
@@ -235,7 +211,9 @@ def run_benchmark():
         "",
         f"**Date:** {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}  ",
         f"**Evaluation Target:** Hermes Agent Delegation Architecture (`stagehands` plugin)  ",
-        f"**Baseline Comparison:** Pure Frontier Sovereign (`google/gemini-4-argon` @ $10/M) vs. Dual-Engine Sovereign + Stagehands  ",
+        f"**Baseline Comparison:** Pure Frontier Sovereign (`{SOVEREIGN_MODEL}` @ "
+        f"${RATES[SOVEREIGN_MODEL]['input']:.2f}/M prompt \u00b7 ${RATES[SOVEREIGN_MODEL]['output']:.2f}/M completion) "
+        f"vs. Dual-Engine Sovereign + Stagehands  ",
         "",
         "## Executive Summary",
         "",

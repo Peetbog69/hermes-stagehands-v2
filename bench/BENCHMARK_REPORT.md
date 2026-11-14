@@ -1,15 +1,15 @@
 # Audited Benchmark: Pure Sovereign vs. Sovereign & Stagehands
 
-**Date:** 2026-11-05 00:55:41 UTC  
+**Date:** 2026-11-14 23:19:32 UTC  
 **Evaluation Target:** Hermes Agent Delegation Architecture (`stagehands` plugin)  
-**Baseline Comparison:** Pure Frontier Sovereign (`google/gemini-4-argon` @ $10/M) vs. Dual-Engine Sovereign + Stagehands  
+**Baseline Comparison:** Pure Frontier Sovereign (`google/gemini-4-argon` @ $2.00/M prompt · $10.00/M completion) vs. Dual-Engine Sovereign + Stagehands  
 
 ## Executive Summary
 
-- **Aggregate Cost Reduction:** **90.9%** (11.0x cost reduction)
+- **Aggregate Cost Reduction:** **90.0%** (10.0x cost reduction)
 - **Parent Memory Pollution Reduction:** **95.9%** (Zero context choke)
-- **Sovereign Total Spend (5 heavy tasks):** `$0.9381`
-- **Stagehands Total Spend (5 heavy tasks):** `$0.0851`
+- **Sovereign Total Spend (5 heavy tasks):** `$0.2065`
+- **Stagehands Total Spend (5 heavy tasks):** `$0.0207`
 
 ---
 
@@ -17,11 +17,11 @@
 
 | Task ID & Name | Worker Persona | Raw Input Size | Pure Sovereign Cost | Stagehands Cost | Cost Reduction | Memory Savings |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **TASK-01**: Syslog & Auth Failure Triage | `scout` (deepseek-v4-flash) | 73,141 tokens (271 KB) | $0.7413 | $0.0448 | **94.0%** (16.5x cheaper) | **98.9%** |
-| **TASK-02**: Multi-File Concurrency Bug Audit | `code_monkey` (deepseek-v4-flash) | 554 tokens (2 KB) | $0.0140 | $0.0070 | **49.7%** (2.0x cheaper) | **53.8%** |
-| **TASK-03**: Gateway Architecture & Rate Limit Retrieval | `librarian` (qwen3.7-flash) | 1,688 tokens (6 KB) | $0.0273 | $0.0095 | **65.5%** (2.9x cheaper) | **69.1%** |
-| **TASK-04**: State Store Replication Red-Team Audit | `adversary` (claude-haiku-5.5) | 95 tokens (0 KB) | $0.0121 | $0.0100 | **16.9%** (1.2x cheaper) | **24.4%** |
-| **TASK-05**: 50KB Financial Settlement Reconciliation | `briefer` (deepseek-v4-flash) | 13,474 tokens (50 KB) | $0.1434 | $0.0137 | **90.4%** (10.5x cheaper) | **95.3%** |
+| **TASK-01**: Syslog & Auth Failure Triage | `scout` (deepseek-v4-flash) | 73,141 tokens (271 KB) | $0.1522 | $0.0092 | **94.0%** (16.6x cheaper) | **98.9%** |
+| **TASK-02**: Multi-File Concurrency Bug Audit | `code_monkey` (deepseek-v4-flash) | 554 tokens (2 KB) | $0.0056 | $0.0022 | **61.0%** (2.6x cheaper) | **53.8%** |
+| **TASK-03**: Gateway Architecture & Rate Limit Retrieval | `librarian` (qwen3.7-flash) | 1,688 tokens (6 KB) | $0.0098 | $0.0028 | **71.9%** (3.6x cheaper) | **69.1%** |
+| **TASK-04**: State Store Replication Red-Team Audit | `adversary` (claude-haiku-5.5) | 95 tokens (0 KB) | $0.0073 | $0.0033 | **55.2%** (2.2x cheaper) | **24.4%** |
+| **TASK-05**: 50KB Financial Settlement Reconciliation | `briefer` (deepseek-v4-flash) | 13,474 tokens (50 KB) | $0.0316 | $0.0033 | **89.5%** (9.5x cheaper) | **95.3%** |
 
 ---
 
