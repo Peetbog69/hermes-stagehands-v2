@@ -440,7 +440,8 @@ def format_stats_report(stats: dict[str, Any]) -> str:
         f"    {fd_p['subagent_runs']:,} backstage worker runs · "
         f"{jan_p['pruned_calls']:,} pruned tool dumps · "
         f"{jan_p['reclaimed_tokens']:,} raw tokens reclaimed · "
-        f"~${stats['profile_estimated_saved_usd']:.2f} Argon snowball avoided (@ $3/M input)",
+        f"~${stats['profile_estimated_saved_usd']:.2f} Argon snowball avoided "
+        f"(@ ${ARGON_INPUT_USD_PER_M:.2f}/M input, rates.py)",
     ]
     return "\n".join(lines)
 
