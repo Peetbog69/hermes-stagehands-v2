@@ -177,3 +177,18 @@ class TestCapabilityProbeImport(unittest.TestCase):
         proc = self._probe_style_import()
         self.assertIn("PROBE_IMPORT_OK", proc.stdout, proc.stderr)
         self.assertNotIn("No module named", proc.stderr)
+
+
+class TestVarnishedDeliveryClause(unittest.TestCase):
+    """The architecture's promise: the junkyard dog's finding reaches the human
+    unsoftened. Routing alone is not enough — the front voice must be told to
+    say the hard thing out loud, warmly, or the brief gets laundered into
+    agreement and the whole point is lost."""
+
+    def test_injected_section_requires_unvarnished_delivery(self):
+        import __init__ as plugin  # probe-style package import covered elsewhere
+        section = plugin._render_sovereign_prompt_section({"source": "cli"}, config_path=None)
+        self.assertIn("Deliver it unvarnished, warmly", section)
+        for word in ("Never soften", "warm face, straight answer"):
+            self.assertIn(word, section)
+        self.assertIn("<backstage-brief>", section)
