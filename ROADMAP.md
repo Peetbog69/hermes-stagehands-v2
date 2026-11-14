@@ -19,7 +19,7 @@ Stagehands 2.0 aims to fuse these two modes natively into a single delegation ar
 
 ### Pattern A: The Backstage Reality Interceptor (Pre-Flight Filter)
 - **Front of House:** Gemini 3.8 Flash (High speed, natural banter, emotional warmth).
-- **Backstage Engine:** DeepSeek V4.1 Flash via Stagehands `analyst` worker.
+- **Backstage Engine:** DeepSeek V4 Pro via Stagehands `analyst` worker.
 - **Workflow:**
   1. Complex architectural, financial, or strategic queries trigger a backstage reality check.
   2. The `analyst` worker tears down the proposal with cold proof, zero praise, and unvarnished critique.
@@ -35,7 +35,7 @@ Stagehands 2.0 aims to fuse these two modes natively into a single delegation ar
 
 ## Implementation TODO List
 - [x] Initial fork of Stagehands v1.0.0 to Stagehands 2.0 (`Peetbog69/hermes-stagehands-v2`).
-- [x] Add default `analyst` worker role to `provider.py` pinned to DeepSeek V4.1 Flash.
+- [x] Add default `analyst` worker role to `provider.py` pinned to `deepseek/deepseek-v4-pro`.
 - [x] Verify regression test suite passes (31/31 tests green).
 - [ ] Design lightweight prompt-level interceptor for anti-sycophancy routing.
 - [ ] Benchmark token cost of on-demand `analyst` delegation vs. standard single-model turns.

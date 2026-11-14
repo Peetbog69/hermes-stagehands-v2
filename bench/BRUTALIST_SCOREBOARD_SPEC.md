@@ -40,13 +40,13 @@ Write a complete, self-contained HTML file at `bench/scoreboard.html` containing
 
 4. **`<section id="sec-exhibit-c">` — EXHIBIT C: TWO-DOOR SANITATION SCHEMATIC (BOT MODE × STAGEHANDS × 48K JANITOR):**
    - Clean technical-manual SVG/CSS wiring diagram + specification table showing:
-     - **FRONT DOOR (`delegation.backend: stagehands`):** 5 stateless, fail-closed workers (`scout` @ 800 tok, `librarian` @ 1000 tok, `code_monkey` @ 1500 tok, `briefer` @ 600 tok, `adversary` @ 1200 tok) on `$0.15/M` flash models — raw tool dumps die with the ephemeral subagent; only the bounded brief enters the Bot Mode forever-chat.
+     - **FRONT DOOR (`delegation.backend: stagehands`):** 5 stateless, fail-closed workers (`scout` @ 800 tok, `librarian` @ 1000 tok, `code_monkey` @ 1500 tok, `briefer` @ 600 tok, `adversary` @ 1200 tok) on `rates.py` flash models — raw tool dumps die with the ephemeral subagent; only the bounded brief enters the Bot Mode forever-chat.
      - **BACK DOOR (Deterministic Engine Policy under `compression:`):** `proactive_prune_tokens: 48000` (with `_proactive_prune_rearm_tokens` `+48k` prompt-cache runway), `threshold_tokens: 120000` (`in_place: true`, preserves `session_id`), and `protect_last_n: 20`.
 
 5. **`<section id="sec-exhibit-d">` — EXHIBIT D: LIVE GUINEA-PIG TELEMETRY RECEIPT (`SESSION 20261105_055550_0ca572b8`):**
    - Pre-populated with today's verified numbers from `bench/live_stats.json` AND separarated into two distinct accounting rows (per MoA Council Ruling `D5` — no double-counting):
      - **Row 1 — Front-Door Interceptor (`Stagehands` Subagents):** Subagent runs, Backstage raw tokens absorbed, Returned brief tokens, Compression Ratio (`38.4x` reference / live session ratio), Children Cost USD vs. Sovereign-Only Cost USD.
-     - **Row 2 — Back-Door Context Janitor (`48k Pruner + 120k In-Place Compactor`):** `3` bulky tool dumps pruned (`13,759` raw tokens reclaimed), `69` older messages compacted in-place at `120k`, **`1,186,956` re-read tokens dodged**, **`$3.56` saved in this single session** at `$3.00/M` Argon input!
+     - **Row 2 — Back-Door Context Janitor (`48k Pruner + 120k In-Place Compactor`):** `3` bulky tool dumps pruned (`13,759` raw tokens reclaimed), `69` older messages compacted in-place at `120k`, **`1,186,956` re-read tokens dodged**, **`$3.56` saved in this single session** at `rates.py` Argon input!
    - **Field Continuity Certification Box (`CASE NO. JOCO-SURVEY-168`):**
      - Stamp: `[CONTINUITY PASSED: 5/5 SURVEY LOTS RETAINED]`
      - Notes: `168` PNEZD stakeout points across Lots `13, 22, 23, 34, 35` remained 100% intact inside `protect_last_n: 20` while `69` older turns were compacted in-place without changing `session_id`.

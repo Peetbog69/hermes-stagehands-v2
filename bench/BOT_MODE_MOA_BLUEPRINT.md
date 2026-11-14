@@ -56,7 +56,7 @@ sovereign_only_cost = parent.estimated_cost_usd - SUM(child.estimated_cost_usd) 
 | D4 | **Seat5's** sovereign-cost SQL joins on `source='subagent'` only. | **Seat4/3/6 filter prevails.** Include the `_delegate_from` clause. |
 | D5 | **Seat4:** `estimated_cost_usd` is absent from the `stats.py` parent SELECT, so the dollar headline may be inflated (blocking). Seat2/3/6 treat it as handled. | **Treat as blocking until verified.** Add `estimated_cost_usd` and emit `cost_double_count_corrected_usd`. |
 | D6 | **Seat5** puts the Janitor keys under `context:`. **Seat1/3/6** only cite the key names. | **Placement unverified.** Use the key names only. |
-| D7 | **Pricing:** $2/$10 per 1M (case study), $10/M (README bench, illustrative), $3/M (guinea-pig save). | **Never mix rates on one scoreboard.** Pick one, label it, and footnote that the $3.56 rate basis is unknown. |
+| D7 | **Pricing:** $2/$10 per 1M (case study), $10/M (README bench, illustrative), see `rates.py` ($2.00/M prompt) (guinea-pig save). | **Never mix rates on one scoreboard.** Pick one, label it, and footnote that the $3.56 rate basis is unknown. |
 | D8 | **Seat4:** front-door and Janitor savings are not additive without dedupe. | **Accepted.** Sum per scope and never across scopes. |
 
 **Additional rulings**
@@ -141,7 +141,7 @@ Use one roster for all Bots. Add per-profile overrides only if Hermes already su
 
 **Invocation:** `/stagehands stats [session_id]`. The Bot Chat id is passed explicitly, so there is no "latest non-subagent" lookup.
 
-**Pricing:** one rate only, `ARGON_INPUT_USD_PER_M = 3.00` (the `stats.py` constant). The footer reads: *"Modeled: 4 chars/token · 10-turn avg · $3/M. The $3.56 live-run rate basis is unverified."*
+**Pricing:** one rate only, `ARGON_INPUT_USD_PER_M = 3.00` (the `stats.py` constant). The footer reads: *"Modeled: 4 chars/token · 10-turn avg · see `rates.py` ($2.00/M prompt). The $3.56 live-run rate basis is unverified."*
 
 **Mandatory SQL (both traps)**
 ```sql
@@ -181,7 +181,7 @@ sovereign_only_cost = MAX(0, parent.estimated_cost_usd - SUM(child.estimated_cos
 
 **Video rules:** Do not show bench numbers (90.9%, 11.0×) as live. If shown, caption them "synthetic benchmark". The $3.56 figure is captioned "modeled, live run".
 
-**Submission blurb (≈60 words):** *Nimbo gives every Bot a forever-chat and a disposable backstage crew. Five stateless Stagehands absorb the tool dumps that made 95.5% of one audited token volume, and a deterministic Janitor (prune at 48k, compact at 120k) handles the rest. Our scoreboard corrects two SQL traps and labels every modeled figure. Get a Robert.*
+**Submission blurb (≈60 words):** *Nimbo gives every Bot a forever-chat and a disposable backstage crew. Six stateless Stagehands absorb the tool dumps that made 95.5% of one audited token volume, and a deterministic Janitor (prune at 48k, compact at 120k) handles the rest. Our scoreboard corrects two SQL traps and labels every modeled figure. Get a Robert.*
 
 **Open before recording:** cache-hit test; `/compact` `session_id` behavior; confirm the audit's Bot-Chat share, since 95.5% comes from one 12-day audit.
 

@@ -137,3 +137,43 @@ class TestV2CleanupRegressions(unittest.TestCase):
         self.assertIn("ARGON_UNCACHED_INPUT_USD_PER_M * (1.0 - cache_hit_rate)", src)
         self.assertLess(rates.ARGON_CACHED_INPUT_USD_PER_M, rates.ARGON_UNCACHED_INPUT_USD_PER_M)
         self.assertEqual(rates.ARGON_UNCACHED_INPUT_USD_PER_M, rates.ARGON_INPUT_USD_PER_M)
+
+
+class TestCapabilityProbeImport(unittest.TestCase):
+    """Mirror `hermes plugins validate`: the plugin is imported as a PACKAGE with
+    submodule_search_locations and no plugin dir on sys.path. A sibling import
+    written absolutely (``from rates import ...``) raises inside that branch and
+    takes the whole plugin down, which is exactly how validate failed once."""
+
+    def _probe_style_import(self):
+        import importlib.util, os, subprocess, sys, textwrap
+        repo = Path(__file__).resolve().parent.parent
+        try:
+            import hermes_cli  # noqa: F401
+            core_root = str(Path(hermes_cli.__file__).resolve().parents[1])
+        except Exception as exc:  # trimmed runtime: nothing to prove here
+            self.skipTest(f"hermes core not importable ({exc})")
+        script = textwrap.dedent(
+            f"""
+            import importlib.util, sys
+            spec = importlib.util.spec_from_file_location(
+                "probe_pkg", r"{repo}/__init__.py", submodule_search_locations=[r"{repo}"]
+            )
+            module = importlib.util.module_from_spec(spec)
+            module.__path__ = [r"{repo}"]
+            sys.modules[spec.name] = module
+            spec.loader.exec_module(module)
+            print("PROBE_IMPORT_OK")
+            """
+        )
+        env = dict(os.environ)
+        env["PYTHONPATH"] = os.pathsep.join(p for p in (core_root, env.get("PYTHONPATH", "")) if p)
+        return subprocess.run(
+            [sys.executable, "-P", "-c", script],
+            capture_output=True, text=True, env=env, timeout=180, check=False,
+        )
+
+    def test_package_import_matches_capability_probe(self):
+        proc = self._probe_style_import()
+        self.assertIn("PROBE_IMPORT_OK", proc.stdout, proc.stderr)
+        self.assertNotIn("No module named", proc.stderr)

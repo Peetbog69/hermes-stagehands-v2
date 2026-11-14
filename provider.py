@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any, Mapping
 
 from agent.delegation_provider import (
@@ -65,21 +66,33 @@ _WORKER_ROUTE_FIELDS = (
     "profile",
 )
 
-# Credential-bearing fields: routed through to the spawn, but never *echoed*.
-_SECRET_ROUTE_FIELDS = ("api_key",)
+# Credential-bearing names: routed through to the spawn, but never *echoed*.
+_SECRET_KEY_PATTERN = re.compile(r"(api[_-]?key|access[_-]?key|token|secret|password|passwd|authorization|bearer)", re.I)
+_URL_USERINFO_PATTERN = re.compile(r"(?<=://)[^/@\s]+(?=@)")
+_REDACTED = "***redacted***"
 
 
 def redact_route(route: Mapping[str, Any]) -> dict[str, Any]:
     """Return a display copy of a route with credential values masked.
 
-    Routes may legitimately carry an ``api_key`` for a pinned worker endpoint, so
-    the key still reaches the spawn — but nothing that prints a route (demo
-    output, doctor, logs) may print the secret itself.
+    A route may legitimately carry credentials for a pinned worker endpoint, so
+    the value still reaches the spawn — but nothing that *prints* a route (demo
+    output, doctor, debug logs) may print the secret. Masking is recursive, so
+    nested provider specs (``fallback_providers``) and URL userinfo are covered
+    too, and the caller's dict is never mutated.
     """
-    out = dict(route)
-    for field in _SECRET_ROUTE_FIELDS:
-        if out.get(field):
-            out[field] = "***redacted***"
+    out: dict[str, Any] = {}
+    for key, value in route.items():
+        if _SECRET_KEY_PATTERN.search(str(key)):
+            out[key] = _REDACTED if value else value
+        elif isinstance(key, str) and key.endswith(("url", "base_url", "endpoint")) and isinstance(value, str):
+            out[key] = _URL_USERINFO_PATTERN.sub(_REDACTED, value)
+        elif isinstance(value, Mapping):
+            out[key] = redact_route(value)
+        elif isinstance(value, list):
+            out[key] = [redact_route(item) if isinstance(item, Mapping) else item for item in value]
+        else:
+            out[key] = value
     return out
 
 

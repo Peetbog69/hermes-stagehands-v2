@@ -40,12 +40,25 @@ _PRUNED_DUPLICATE_PREFIX = "[Duplicate tool output"
 
 # Pricing lives in exactly one place: rates.py (verified against the live
 # provider catalog). Do not restate a rate here.
-from rates import (  # noqa: E402
-    ARGON_CACHED_INPUT_USD_PER_M,
-    ARGON_INPUT_USD_PER_M,
-    ARGON_UNCACHED_INPUT_USD_PER_M,
-    WORKER_INPUT_USD_PER_M,
-)
+#
+# Relative first: when Hermes loads this plugin as a package (the capability
+# probe and `plugins install` both import __init__.py with
+# submodule_search_locations and no plugin dir on sys.path), an absolute sibling
+# import raises ModuleNotFoundError and takes the whole plugin down with it.
+try:
+    from .rates import (  # type: ignore[import-not-found]
+        ARGON_CACHED_INPUT_USD_PER_M,
+        ARGON_INPUT_USD_PER_M,
+        ARGON_UNCACHED_INPUT_USD_PER_M,
+        WORKER_INPUT_USD_PER_M,
+    )
+except ImportError:  # flat checkout / direct `import stats`
+    from rates import (  # noqa: E402
+        ARGON_CACHED_INPUT_USD_PER_M,
+        ARGON_INPUT_USD_PER_M,
+        ARGON_UNCACHED_INPUT_USD_PER_M,
+        WORKER_INPUT_USD_PER_M,
+    )
 
 
 def _estimate_pruned_stub_orig_chars(content: str) -> int | None:
