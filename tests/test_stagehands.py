@@ -27,12 +27,13 @@ from agent.delegation_provider import (  # noqa: E402
 from plugins.delegation.default import DefaultDelegationProvider  # noqa: E402
 from provider import DEFAULT_WORKERS, StagehandsProvider  # noqa: E402
 
-WORKERS = ["scout", "librarian", "code_monkey", "adversary", "briefer"]
+WORKERS = ["scout", "librarian", "code_monkey", "adversary", "analyst", "briefer"]
 EXPECTED_ROUTES = [
     ("scout", "deepseek/deepseek-v4-flash", "low", 8192),
     ("librarian", "qwen/qwen3.7-flash", "low", 8192),
     ("code_monkey", "deepseek/deepseek-v4.1-flash", "low", 16384),
     ("adversary", "anthropic/claude-haiku-5.5", "medium", 8192),
+    ("analyst", "deepseek/deepseek-v4.1-flash", "low", 8192),
     ("briefer", "deepseek/deepseek-v4-flash", "low", 8192),
 ]
 

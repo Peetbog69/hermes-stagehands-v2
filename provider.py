@@ -35,6 +35,12 @@ DEFAULT_WORKERS: dict[str, dict[str, Any]] = {
         "request_overrides": {"max_tokens": 8192},
         "desc": "Red-team auditor finding edge cases, race conditions, and security holes (<=350 words)",
     },
+    "analyst": {
+        "model": "deepseek/deepseek-v4.1-flash",
+        "reasoning_effort": "low",
+        "request_overrides": {"max_tokens": 8192},
+        "desc": "Brutally objective verifier and gut-check critic; strips sycophancy, punctures false claims, requires cold proof (<=300 words)",
+    },
     "briefer": {
         "model": "deepseek/deepseek-v4-flash",
         "reasoning_effort": "low",
@@ -70,7 +76,7 @@ class StagehandsProvider(DelegationProvider):
 
     @property
     def summary(self) -> str:
-        return "Route delegated tasks to typed, budgeted backstage workers (scout, librarian, code_monkey, adversary, briefer)."
+        return "Route delegated tasks to typed, budgeted backstage workers (scout, librarian, code_monkey, adversary, analyst, briefer)."
 
     def _workers(self, config: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
         """Resolve the active worker roster from settings, merging overrides onto DEFAULT_WORKERS.
@@ -120,8 +126,8 @@ class StagehandsProvider(DelegationProvider):
             f"{roster}. "
             "SOVEREIGN RULE (overrides default 'DO NOT USE FOR' above): your parent turn runs on "
             "expensive frontier compute — whenever work needs 3+ shell/file/DB probes, log scraping, "
-            "codebase greps/tests, or multi-doc/skill reading, delegate it to `scout`, `librarian`, "
-            "`code_monkey`, `adversary`, or `briefer` instead of chaining `terminal`, `execute_code`, "
+            "codebase greps/tests, multi-doc/skill reading, or an unvarnished objective gut-check, delegate it to `scout`, `librarian`, "
+            "`code_monkey`, `adversary`, `analyst`, or `briefer` instead of chaining `terminal`, `execute_code`, "
             "or `read_file` loops directly in the parent. "
             "Ask backstage workers for concise, structured briefs or use `output_schema` to bound "
             "their response. Omit `worker` only when a subagent genuinely needs the parent route."
